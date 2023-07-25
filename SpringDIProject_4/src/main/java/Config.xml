@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ <configuration>
+ <!-- 
+ 		(properties?, settings?, typeAliases?, typeHandlers?, objectFactory?, objectWrapperFactory?, 
+ 		 reflectorFactory?, plugins?, environments?, databaseIdProvider?, mappers?) => 순서대로 해야함
+  -->
+  <!-- VO 등록 -->
+  <typeAliases>
+  	<typeAlias type="com.sist.dao.EmpVO" alias="EmpVO"/>
+  	<typeAlias type="com.sist.dao.DeptVO" alias="DeptVO"/>
+  </typeAliases>
+  <mappers>
+  	<mapper resource="com/sist/dao/emp-mapper.xml"/>
+  </mappers>
+ </configuration>
