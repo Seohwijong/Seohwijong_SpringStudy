@@ -1,6 +1,7 @@
 package com.sist.mapper;
 import java.util.*;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -14,14 +15,14 @@ public interface BoardMapper {
 			+ "FROM springBoard)) "
 			+ "WHERE num BETWEEN #{start} AND #{end}")
 								//map.get("start") map.get("end")
-	public List<BoardVO> boardListData(Map map);
+	public List<BoardVO> boardListData(Map map); // 매개변수는 하나 vo가 안갖고 있는 변수는 Map start end vo에 없음
 	//총페이지
 	@Select("SELECT CEIL(COUNT(*)/10.0) FROM springBoard")
 	public int boardTotalPage();
 	@Insert("INSERT INTO springBoard(no,name,subject,content,pwd) "
 			+"VALUES(sb_no_seq.nextval,#{name},#{subject},#{content},#{pwd})")
 	//									vo.getName() ,vo.getSubject()
-	public void boardInsert(BoardVO vo);
+	public void boardInsert(BoardVO vo); //
 	// 상세보기
 	@Update("UPDATE springBoard SET "
 			+ "hit=hit+1 "
@@ -30,4 +31,22 @@ public interface BoardMapper {
 	@Select("SELECT no,name,subject,content,hit,TO_CHAR(regdate,'YYYY-MM-DD') as dbday FROM springBoard "
 			+ "WHERE no=#{no}")
 	public BoardVO boardDetailData(int no);
+	
+	//수정하기 
+	@Select("SELECT no,name,subject,content "
+			+ "FROM springBoard "
+			+ "WHERE no=#{no}")
+	public BoardVO boardUpdateData(int no);
+	
+	@Select("SELECT pwd FROM springBoard "
+			+ "WHERE no=#{no}")
+	public String boardGetPassword(int no);
+	
+	@Update("UPDATE springBoard SET "
+			+ "name=#{name},subject=#{subject},content=#{content} "
+			+ "WHERE no=#{no}")
+	public void boardUpdate(BoardVO vo);
+	
+	@Delete("DELETE FROM springboard WHERE no=#{no}")
+	public void boardDelete(int no);
 }
