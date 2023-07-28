@@ -5,8 +5,11 @@
  <configuration>
   <typeAliases>
   	<typeAlias type="com.sist.vo.EmpVO" alias="EmpVO"/>
+  	<typeAlias type="com.sist.vo.FoodVO" alias="FoodVO"/>
+  	<typeAlias type="com.sist.vo.CategoryVO" alias="CategoryVO"/>
   </typeAliases>
   <mappers>
    <mapper resource="com/sist/mapper/emp-mapper.xml"/>
+   <mapper resource="com/sist/mapper/food-mapper.xml"/>
   </mappers>
  </configuration>
