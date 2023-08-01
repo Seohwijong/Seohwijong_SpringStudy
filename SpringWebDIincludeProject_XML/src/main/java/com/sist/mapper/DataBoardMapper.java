@@ -1,9 +1,11 @@
 package com.sist.mapper;
 import java.util.*;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 
 import com.sist.vo.*;
 public interface DataBoardMapper {
@@ -19,4 +21,31 @@ public interface DataBoardMapper {
 	@Insert("INSERT INTO springDataBoard(no,name,subject,content,pwd,filename,filesize,filecount) "
 			+ "VALUES(#{no},#{name},#{subject},#{content},#{pwd},#{filename},#{filesize},#{filecount})")
 	public void dataBoardInsert(DataBoardVO vo);
+	@Select("SELECT no,name,subject,content,filesize,filename,filecount,TO_CHAR(regdate,'YYYY-MM-DD') as dbday,hit "
+			+ "FROM springdataboard "
+			+ "WHERE no=#{no}")
+	public DataBoardVO dataBoardDetail(int no);
+	@Update("UPDATE springDataBoard SET "
+			+ "hit=hit+1 "
+			+ "WHERE no=#{no}")
+	public void hitIncrement(int no);
+	
+	@Select("SELECT no,subject,name,TO_CHAR(regdate,'YYYY-MM-DD') as dbday,hit "
+			+ "FROM springDataBoard "
+			+ "WHERE ${fs} LIKE '%'||#{ss}||'%'")
+	public List<DataBoardVO> databoardFindData(Map map);
+	// 수정하기
+	// 비밀번호 검색
+	@Select("SELECT pwd FROM springDataBoard "
+			+ "WHERE no=#{no}")
+	public String databoardGetPassword(int no);
+	// 수정
+	@Update("UPDATE springDataBoard SET "
+			+ "name=#{name},subject=#{subject},content=#{content} "
+			+ "WHERE no=#{no}")
+	public void databoardUpdate(DataBoardVO vo);
+	// 삭제
+	@Delete("DELETE FROM springDataBoard WHERE no=#{no}")
+	public void databoardDelete(int no);
+	
 }
