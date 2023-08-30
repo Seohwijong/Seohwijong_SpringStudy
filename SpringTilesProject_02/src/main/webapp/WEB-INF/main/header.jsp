@@ -14,7 +14,7 @@
   <header id="header" class="clear"> 
     <!-- ################################################################################################ -->
     <div id="logo" class="fl_left">
-      <h1><a href="../main/main.do">Tiles & Session</a></h1>
+      <h1><a href="../main/main.do">Spring Food</a></h1>
     </div>
     <div class="fl_right">
       <ul class="inline">

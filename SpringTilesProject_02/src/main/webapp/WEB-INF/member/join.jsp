@@ -89,7 +89,7 @@ $(funtion(){
         <tr>
          <th class="text-right" width=10%>우편번호</th>
          <td width=90% class="inline">
-          <input type=text name=post id=post size=10 class="input-sm">
+          <input type=text name=post id==post size=10 class="input-sm">
           <input type=button value="우편번호검색" class="btn btn-sm btn-info"
             id="postBtn">
          </td>

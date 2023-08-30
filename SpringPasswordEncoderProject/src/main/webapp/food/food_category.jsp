@@ -15,118 +15,133 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <style type="text/css">
 .container-fluid{
-	margin-top: 50px;
+ margin-top: 50px;
 }
 .row{
-	margin: 0px auto;
-	width: 100%;
+ margin: 0px auto;
+ width: 100%;
 }
 .images:hover{
-	cursor:pointer
+  cursor: pointer 
 }
 </style>
 </head>
 <body>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="text-right">
-				${sessionScope.name }님 로그인 중입니다 <a href="../member/logout.do" class="btn btn-sm btn-danger">로그아웃</a>
-			</div>
-			<div class="text-center">
-				<button class="btn btn-sm btn-danger" @click="categoryGetData(1)">믿고보는 맛집 리스트</button>
-				<button class="btn btn-sm btn-success" @click="categoryGetData(2)">지역별 맛집 리스트</button>
-				<button class="btn btn-sm btn-info" @click="categoryGetData(3)">메뉴별 맛집 리스트</button>
-			</div>
-		</div>
-		<div style="height: 10px"></div>
-		<div class="row">
-			<div class="col-sm-7">
-				<div class="col-md-4" v-for="vo in cate_list">
-					<div class="thumbnail">
-						<img :src="vo.poster" style="width:100%" class="images" @click="foodGetlist(vo.cno,true)">
-						<div class="caption">
-							<p style="font-size:9px">{{vo.title}}</p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-5" v-show="isShow">
-				<div class="jumbotron">
-					<h3 class="text-center">{{cate_info.title}}</h3>
-					<h4 class="text-center">{{cate_info.subject}}</h4>
-				</div>
-					<table class="table" v-for="fvo in food_list">
-						<tr>
-							<td width=30% class="text-center" rowspan="4">
-								<img :src="fvo.poster" style="width:100%">
-							</td>
-							<td width=70%><h4>{{fvo.name}}&nbsp;<span style="color:orange">{{fvo.score}}</span></h4></td>
-						</tr>
-						<tr>
-							<td width=70%>{{fvo.address}}</td>
-						</tr>
-						<tr>
-							<td width=70%>{{fvo.phone}}</td>
-						</tr>
-						<tr>
-							<td width=70%>{{fvo.type}}</td>
-						</tr>
-					</table>
-			</div>
-		</div>
+ <div class="container-fluid">
+  <div class="row">
+    <div class="text-right">
+     ${sessionScope.name }님 로그인 중입니다. <a href="../member/logout.do" class="btn btn-sm btn-danger">로그아웃</a>
+    </div>
+  </div>
+  <div class="row">
+     <div class="text-center">
+       <button class="btn btn-sm btn-danger" @click="categoryGetData(1)">믿고보는 맛집 리스트</button>
+       <button class="btn btn-sm btn-danger" @click="categoryGetData(2)">지역별 맛집 리스트</button>
+       <button class="btn btn-sm btn-danger" @click="categoryGetData(3)">메뉴별 인기 맛집</button>
+     </div>
+  </div>
+   <div style="height: 10px"></div>
+   <div class="row">
+   <div class="col-sm-7">
+    <div class="col-md-4" v-for="vo in cate_list">
+		    <div class="thumbnail">
+		        <img :src="vo.poster" style="width:100%" class="images" @click="foodGetList(vo.cno,true)">
+		        <div class="caption">
+		          <p style="font-size:9px">{{vo.title}}</p>
+		        </div>
+		  </div>
 	</div>
-	<script>
-		new Vue({
-			el:'.container-fluid',
-			data:{
-				cate_list:[],
-				food_list:[],
-				cate_info:{},
-				isShow:false
-			},
-			// 생성자 => 초기화면 출력
-			mounted:function(){
-				this.categoryGetData(1);
-			},
-			methods:{
-				categoryGetData:function(cno){
-					axios.get('../food/food_category_vue.do',{
-						params:{
-							cno:cno
-						}
-					}).then(response=>{
-						console.log(response.data)
-						this.cate_list=response.data
-					}).catch(error=>{
-						console.log(error.response)
-					})
-				},
-				foodGetlist:function(cno,bool){
-					this.isShow=bool;
-					axios.get("../food/food_category_info_vue.do",{
-						params:{
-							cno:cno
-						}
-					}).then(response=>{
-						console.log(response.data)
-						this.cate_info=response.data
-					}).catch(error=>{
-						console.log(error.response)
-					})
-					
-					axios.get("../food/food_list_vue.do",{
-						params:{
-							cno:cno
-						}
-					}).then(response=>{
-						console.log(response.data)
-						this.food_list=response.data
-					}).catch(error=>{
-						console.log(error.response)
-					})
-				}
-			}
-		})
-	</script>
+	 <div style="height: 30px"></div>
+	 <h4>최근 방문 맛집</h4>
+	 <hr>
+	</div>
+	<div class="col-sm-5" v-show="isShow">
+	  <div class="jumbotron">
+	   <h3 class="text-center">{{cate_info.title}}</h3>
+	   <h4 class="text-center">{{cate_info.subject}}</h4>
+	  </div>
+	  <div style="overflow-y:auto;height: 500px">
+	  <table class="table">
+	    <tr>
+	     <td>
+	      <table class="table" v-for="fvo in food_list">
+	       <tr>
+	        <td width=30% class="text-center" rowspan="4">
+	        <a :href="'../food/food_detail.do?fno='+fvo.fno">
+	          <img :src="fvo.poster" style="width: 150px;height:100px;">
+	          </a>
+	        </td>
+	        <td width=70%><h4><a :href="'../food/food_detail.do?fno='+fvo.fno">{{fvo.name}}</a>&nbsp;<span style="color:orange">{{fvo.score}}</span></h4></td>
+	       </tr>
+	       <tr>
+	         <td width=70%>{{fvo.address}}</td>
+	       </tr>
+	       <tr>
+	         <td width=70%>{{fvo.phone}}</td>
+	       </tr>
+	       <tr>
+	         <td width=70%>{{fvo.type}}</td>
+	       </tr>
+	      </table>
+	     </td>
+	    </tr>
+	  </table>
+	  </div>
+	</div>
+   </div>
+ </div>
+ <script>
+ new Vue({
+	 el:'.container-fluid',
+	 data:{
+		 cate_list:[],
+		 food_list:[],
+		 cate_info:{},
+		 isShow:false
+	 },
+	 // 생성자 , 초기화 => mounted 초기화면 출력 
+	 mounted:function(){
+		 this.categoryGetData(1);
+	 },
+	 methods:{
+		 categoryGetData:function(cno){
+			 axios.get('../food/food_category_vue.do',{
+				 params:{
+					 cno:cno
+				 }
+			 }).then(response=>{
+				 console.log(response.data)
+				 this.cate_list=response.data
+			 }).catch(error=>{
+				 console.log(error.response)
+			 })
+		 },
+		 foodGetList:function(cno,bool){
+			 this.isShow=bool;
+			 axios.get("../food/food_category_info_vue.do",{
+				 params:{
+					 cno:cno
+				 }
+			 }).then(response=>{
+				 console.log(response.data)
+				 this.cate_info=response.data
+			 }).catch(error=>{
+				 console.log(error.response)
+			 })
+			 
+			 axios.get("../food/food_list_vue.do",{
+				 params:{
+					 cno:cno
+				 }
+			 }).then(response=>{
+				 console.log(response.data)
+				 this.food_list=response.data
+			 }).catch(error=>{
+				 console.log(error.response)
+			 })
+		 }
+	 }
+ })
+ </script>
 </body>
 </html>

@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FoodVO {
-	private int fno,cno;
-	private String name,address,phone,type,price,parking,time,menu,poster;
-	private double score;
+   private int fno,cno;
+   private String name,phone,type,parking,price,time,menu,poster,address;
+   private double score;
+   private String sessionId;
 }
